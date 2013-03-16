@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+
+def get_regex(pattern, encoding='ASCII', options=0)
+  Regexp.new(pattern.encode(encoding),options)
+end
+
+
+COMMENTS_REGEXP = get_regex('/\*(?<text>.*)\*/', 'UTF-16LE')
+LABEL_REGEXP = get_regex('^"(?<text>.*)" = ".*";$', 'UTF-16LE')
+
+def remove_duplicates(file)
+	puts "Removing duplicates from #{file}"	
+
+	
+	labels = Hash.new
+	comment = ""
+
+	# Parse all the labels from the xib
+	File.open(file, 'rb:UTF-16LE').each do |line|
+
+		# Read comments
+		md = COMMENTS_REGEXP.match(line)  
+		if md  then
+			comment = md.captures.first
+		end
+
+		# Read label
+		md = LABEL_REGEXP.match(line)  
+		if md  then
+			key = md.captures			
+			if labels[key].nil? then
+				labels[key] = Hash.new() 
+				labels[key][:comment] = comment
+				labels[key][:line] = line			
+			end
+			comment = ""
+		end
+	end  
+
+	File.open(file, 'wb:UTF-16LE') do |file|	
+		labels.keys.sort.each do |key|
+			str = key.first
+			comment = labels[key][:comment]
+			line = labels[key][:line]
+			file.puts "\n/*".encode('UTF-16LE') + comment + "*/".encode('UTF-16LE')				
+			file.puts line
+		end
+	end
+
+end
+
+
+
+current_dir = File.dirname(__FILE__)
+languages = Dir["*.lproj"]
+puts "#{languages.length} languages detected: #{languages.join(', ')}"
+
+# For each language
+languages.each do |dir|
+	puts "\nInternazionalizing #{dir}..."
+	
+	# Execute genstrings appending results
+	puts "Executing `genstrings -a -o #{dir} **/*.{h,m}`"	
+	source_files = Dir["**/*.{h,m}"]
+ 	`genstrings -a -littleEndian -o #{dir} "#{source_files.join('" "')}"`
+ 	
+	# Execute genxibstrings appending results	
+	puts "Executing `#{current_dir}/genxibstrings -a -o #{dir} **/*.xib`"	
+	source_files = Dir["**/*.xib"]
+ 	`#{current_dir}/genxibstrings -a -o #{dir} "#{source_files.join('" "')}"`
+ 	
+	# Remove duplicates by order	
+	remove_duplicates(File.join(dir, 'Localizable.strings'))
+
+end

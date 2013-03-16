@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+require 'tmpdir'
+
+def usage(s)
+    $stderr.puts(s)
+    $stderr.puts("Usage: #{File.basename($0)}: [-o output_dir] [-a] [input_files]")
+    $stderr.puts("\t-o: output directory")
+    $stderr.puts("\t-a: append results")
+    exit(2)
+end
+
+def get_regex(pattern, encoding='ASCII', options=0)
+  Regexp.new(pattern.encode(encoding),options)
+end
+
+#### PARSE PARAMETERS ####
+input_files   = []
+output = "."
+append = false
+loop { 
+	if ARGV[0] == '-o' then ARGV.shift; output = ARGV.shift	
+	elsif ARGV[0] == '-a' then ARGV.shift; append = true
+	elsif  /^-/ =~ ARGV[0] then  usage("Unknown option: #{ARGV[0].inspect}") 
+	else break end
+}
+
+output = File.join(output, 'Localizable.strings')
+input_files.push('**/*.xib') unless input_files.length > 0
+
+puts "Output file: #{output}"
+puts "Input files: #{input_files}"
+
+#### GET THE LABELS ####
+labels = Hash.new
+LABEL_REGEXP = get_regex('^".*" = "(?<text>.*)";$', 'UTF-16LE')
+
+# For every xib file
+input_files.each do |files| 
+	Dir[files].each do |file|
+		name = File.basename(file)
+		temp_file = File.join(Dir.tmpdir, name + ".strings")
+
+		# Extract labels
+		`ibtool --export-strings-file "#{temp_file}" "#{file}"`
+
+		# Parse all the labels from the xib
+		File.open(temp_file, 'rb:UTF-16LE').each do |line|
+			md = LABEL_REGEXP.match(line)  
+			if md  then
+				key = md.captures			
+				labels[key] = Array.new() if labels[key].nil?
+				labels[key].push(name)
+			end 
+		end  	
+	end
+end
+
+#### FORMAT LABELS  IN LOCALIZABLE.STRINGS FORMAT ####
+File.open(output, (append ? 'a' : 'w') + 'b:UTF-16LE') do |file|	
+	labels.keys.sort.each do |key|
+		str = key.first
+		xibs = labels[key]		
+		file.puts "\n/* #{xibs.join(', ')} */"				
+		file.puts '"'.encode('UTF-16LE') + str + '" = "'.encode('UTF-16LE') + str + '";'.encode('UTF-16LE')
+	end
+end
