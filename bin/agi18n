@@ -73,3 +73,5 @@ languages.each do |dir|
 	remove_duplicates(File.join(dir, 'Localizable.strings'))
 
 end
+
+puts "\n\n* DONE *\nAGi18n finished internazionalizing correctly.\nRemember to use the Localizable.strings files as UTF-16LE into your XCode project"
