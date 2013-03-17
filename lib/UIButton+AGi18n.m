@@ -1,36 +1,16 @@
 //
 //  UIButton+AGi18n.m
-//  SupermarketDirect
+//  AGi18n
 //
 //  Created by Angel Garcia on 3/13/13.
-//  Copyright (c) 2013 Xaton. All rights reserved.
+//  Copyright (c) 2013 angelolloqui.com. All rights reserved.
 //
 
 #import "UIButton+AGi18n.h"
-#import <objc/runtime.h>
 
 @implementation UIButton (AGi18n)
 
-+ (void)load {
-    Method awakeFromNibParent = class_getInstanceMethod([self superclass], @selector(awakeFromNib));
-    Method awakeFromNibOriginal = class_getInstanceMethod(self, @selector(awakeFromNib));
-    Method awakeFromNibCustom = class_getInstanceMethod(self, @selector(awakeFromNibCustom));
-    
-    //Method does not exist in this class (inherited from super), so add it
-    if (awakeFromNibParent == awakeFromNibOriginal) {
-        class_addMethod(self, @selector(awakeFromNib), method_getImplementation(awakeFromNibParent), "v@:");
-        awakeFromNibOriginal = class_getInstanceMethod(self, @selector(awakeFromNib));
-    }
-    
-    //Swizzle methods
-    method_exchangeImplementations(awakeFromNibOriginal, awakeFromNibCustom);
-}
-
-
-- (void)awakeFromNibCustom {
-    
-    //Call standard methods
-    [self awakeFromNibCustom];
+- (void)localizeFromNib {
 
     //Replace text with localizable version
     NSArray *states = @[@(UIControlStateNormal), @(UIControlStateHighlighted), @(UIControlStateDisabled), @(UIControlStateSelected), @(UIControlStateApplication)];

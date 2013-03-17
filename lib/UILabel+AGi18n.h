@@ -1,12 +1,13 @@
 //
 //  UILabel+AGi18n.h
-//  SupermarketDirect
+//  AGi18n
 //
 //  Created by Angel Garcia on 3/13/13.
-//  Copyright (c) 2013 Xaton. All rights reserved.
+//  Copyright (c) 2013 angelolloqui.com. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "NSObject+AGi18n.h"
 
 @interface UILabel (AGi18n)
 
