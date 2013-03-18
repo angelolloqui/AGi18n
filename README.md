@@ -1,7 +1,7 @@
 AGi18n
 ======
 
-Utility to easily localize your iOS apps by automatically extracting texts from code and XIB files into a Localizable strings
+Utility to easily localize your iOS apps by automatically extracting texts from code and XIB files into a Localizable strings and inject them back on runtime without changing your XIB files.
 
 
 Why use AGi18n?
@@ -39,12 +39,14 @@ To **install the command line utilities**, just run this installation tool
 or, if you want to do it manually, copy and paste the ```genxibstrings``` and ```agi18n``` files in any folder contained in your PATH (with +x permission)
 
 
-Then, for any project where you want to use AGi18n, you need to **include the source files** contained in the /lib folder. For that you can use CocoaPods or just drag & drop the files into your project. [TODO]
+Then, for any project where you want to use AGi18n, you need to **include the source files** contained in the ```/lib``` folder. For that you can use CocoaPods or just drag & drop the files into your project. [TODO]
 
 
 Internals
 ---------
-[TODO]
+The library swizzles the ```[NSObject awakeFromNib]``` method to hook a call to a new empty method called ```[NSObject localizeFromNib]```, so virtually every object can be localized in the XIB files. AGi18n also includes a built-in set of categories for standard UI components such as UILabel, UIButton, UITextField... to correctly set their localizable properties (text, title, placeholders,...). 
+
+If you want to localize a custom component, just overwrite the method ```localizeFromNib``` and place your localization logic there. This step is not needed if your custom component is just a composition of other standard UI components.
 
 
 Caveats
@@ -52,9 +54,11 @@ Caveats
 
 All this magic can not come without some caveats:
 
-* **Performance**: Using AGi18n will have some performance impact when loading your views due to the extra lookup in the translations table performed for every single text. In my tests the impact is so low that is not appreciable, but it is something that you may want to check in your app before shipping to your users.
+* **Performance**: Using AGi18n will have some performance impact when loading your views due to the extra lookup in the translations table performed for every single text. In my tests the impact is so low  (about 5% in the controllers instantiation) that is not appreciable, but it is something that you may want to check in your app before shipping to your users.
 
 * **Extra keys in Localizable.strings**: All visible texts are added to your Localizable.strings, including those which are never displayed because they are always set by code after loading the view. This is a caveat that also happens if you use the standard way (with ```ibtool```) and that AGi18n can not resolve.
+
+* **Use UTF-16LE**: The current implementation of agi18n tools use a UTF-16LE byte encoding. Please remember to set the proper encoding in XCode or you will see incorrect data. Support for UTF-8 might be added in the future.
 
 * more ?
 
