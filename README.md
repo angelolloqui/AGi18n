@@ -7,7 +7,7 @@ Utility to easily localize your iOS apps by automatically extracting texts from 
 Why use AGi18n?
 ---------------
 
-Localizing apps that use Interface Builder is tedious. You have a few methods provided by Apple (like the ibtool) but they are hard to use, time consuming, difficult to mantain and their output format is not as clean as the one in Localizable.strings using NSLocalizableString. You can find more info about the problems of the standard ways here [TODO].
+Localizing apps that use Interface Builder is tedious. You have a few methods provided by Apple (like the ibtool) but they are hard to use, time consuming, difficult to mantain and their output format is not as clean as the one in Localizable.strings using NSLocalizableString. You can find more info about the problems of the standard ways here [Localization in iOS apps made simple](http://angelolloqui.com/blog/28-Localization-in-iOS-apps-made-simple).
 
 By using AGi18n you make all your IB elements to use your Localizable.strings by default, without changing any single line of code or property in your IB files. It just works! Moreover, AGi18n comes with two useful utilities:
 
