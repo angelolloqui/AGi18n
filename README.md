@@ -1,7 +1,7 @@
 AGi18n
 ======
 
-Utility to easily localize your iOS apps by automatically extracting texts from code and XIB files into a Localizable strings and inject them back on runtime without changing your XIB files.
+Utility to easily localize your iOS apps by automatically extracting texts from code and XIB files into a Localizable strings and inject them back on runtime without changing your XIB files. [Check out the demo video](http://www.youtube.com/watch?v=4Cxv24W2MqA)
 
 
 Why use AGi18n?
