@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'tmpdir'
+
+input_file   = ARGV[0]
+output_file   = File.join(Dir.tmpdir, File.basename(input_file))
+
+encoding = `file -b --mime-encoding #{input_file}`.strip.upcase
+if (encoding == 'BINARY') then 
+	encoding = 'UTF-16LE' 
+end
+
+if (encoding != 'UTF-8') then
+	`iconv -f #{encoding} -t UTF-8 #{input_file} > #{output_file}`
+	`mv #{output_file} #{input_file}`
+end
