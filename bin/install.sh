@@ -9,6 +9,6 @@ curl https://raw.github.com/angelolloqui/AGi18n/master/bin/agi18n > /usr/local/b
 chmod +x /usr/local/bin/agi18n
 
 echo "Rehashing..."
-rehash
+hash -r
 
 echo "Downloads complete. Try using genxibstrings or agi18n commands in your xcode project source folder"
