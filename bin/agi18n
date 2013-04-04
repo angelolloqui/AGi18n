@@ -65,8 +65,8 @@ languages.each do |dir|
  	`genstrings -a -littleEndian -o #{dir} "#{source_files.join('" "')}"`
  	
 	# Execute genxibstrings appending results	
-	puts "Executing `#{current_dir}/genxibstrings -a -o #{dir} **/*.xib`"	
-	source_files = Dir["**/*.xib"]
+	puts "Executing `#{current_dir}/genxibstrings -a -o #{dir} **/*.{xib,nib,storyboard}`"	
+	source_files = Dir["**/*.{xib,nib,storyboard}"]
  	`#{current_dir}/genxibstrings -a -o #{dir} "#{source_files.join('" "')}"`
  	
 	# Remove duplicates by order	
