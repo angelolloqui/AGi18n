@@ -16,8 +16,7 @@ def remove_duplicates(file)
 	comment = ""
 
 	# Parse all the labels from the xib
-	File.open(file, 'rb:UTF-16LE').each do |line|
-
+	File.open(file, 'rb:bom|UTF-16LE').each do |line|
 		# Read comments
 		md = COMMENTS_REGEXP.match(line)  
 		if md  then
@@ -38,6 +37,8 @@ def remove_duplicates(file)
 	end  
 
 	File.open(file, 'wb:UTF-16LE') do |file|	
+    file.puts "\uFEFF"
+    
 		labels.keys.sort.each do |key|
 			str = key.first
 			comment = labels[key][:comment]
