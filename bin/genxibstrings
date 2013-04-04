@@ -26,7 +26,7 @@ loop {
 }
 
 output = File.join(output, 'Localizable.strings')
-input_files.push('**/*.xib') unless input_files.length > 0
+input_files.push('**/*.{xib,nib,storyboard}') unless input_files.length > 0
 
 puts "Output file: #{output}"
 puts "Input files: #{input_files}"
