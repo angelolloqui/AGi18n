@@ -74,6 +74,8 @@ Collaboration
 
 Forks, patches and other feedback are always welcome.
 
+Thanks for your pull requests to:
+- [sbusch-mobivention](https://github.com/sbusch-mobivention)
 
 Credits
 -------
