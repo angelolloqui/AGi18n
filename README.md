@@ -38,6 +38,7 @@ To **install the command line utilities**, just run this installation tool
 
 or, if you want to do it manually, copy and paste the ```genxibstrings``` and ```agi18n``` files in any folder contained in your PATH (with +x permission)
 
+** WARNING **: The current version of AGi18n tools require ruby 1.9.0.
 
 Then, for any project where you want to use AGi18n, you need to **include the source files** contained in the ```/lib``` folder. For that you can use CocoaPods or just drag & drop the files into your project. [TODO]
 
