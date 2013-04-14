@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# encoding: UTF-8
 
 require 'tmpdir'
 
@@ -10,10 +11,6 @@ def usage(s)
     exit(2)
 end
 
-def get_regex(pattern, encoding='ASCII', options=0)
-  Regexp.new(pattern.encode(encoding),options)
-end
-
 #### PARSE PARAMETERS ####
 input_files   = []
 output = "."
@@ -22,18 +19,22 @@ loop {
 	if ARGV[0] == '-o' then ARGV.shift; output = ARGV.shift	
 	elsif ARGV[0] == '-a' then ARGV.shift; append = true
 	elsif  /^-/ =~ ARGV[0] then  usage("Unknown option: #{ARGV[0].inspect}") 
-	else break end
+	else
+		input_files = ARGV 
+		break 
+	end
 }
 
 output = File.join(output, 'Localizable.strings')
-input_files.push('**/*.xib') unless input_files.length > 0
+input_files.push('**/*.{xib,nib,storyboard}') unless input_files.length > 0
+current_dir = File.dirname(__FILE__)
 
 puts "Output file: #{output}"
 puts "Input files: #{input_files}"
 
 #### GET THE LABELS ####
 labels = Hash.new
-LABEL_REGEXP = get_regex('^".*" = "(?<text>.*)";$', 'UTF-16LE')
+LABEL_REGEXP = /^".*" = "(?<text>.*)";$/
 
 # For every xib file
 input_files.each do |files| 
@@ -44,9 +45,12 @@ input_files.each do |files|
 		# Extract labels
 		`ibtool --export-strings-file "#{temp_file}" "#{file}"`
 
+		# Convert to utf-8
+		`#{current_dir}/agconv #{temp_file}`
+
 		# Parse all the labels from the xib
-		File.open(temp_file, 'rb:UTF-16LE').each do |line|
-			md = LABEL_REGEXP.match(line)  
+		File.open(temp_file, 'r:UTF-8').each do |line|			
+			md = LABEL_REGEXP.match(line)  		
 			if md  then
 				key = md.captures			
 				labels[key] = Array.new() if labels[key].nil?
@@ -56,12 +60,15 @@ input_files.each do |files|
 	end
 end
 
+# Convert to utf-8
+`#{current_dir}/agconv #{output}`
+
 #### FORMAT LABELS  IN LOCALIZABLE.STRINGS FORMAT ####
-File.open(output, (append ? 'a' : 'w') + 'b:UTF-16LE') do |file|	
+File.open(output, (append ? 'a' : 'w') + ':UTF-8') do |file|	
 	labels.keys.sort.each do |key|
 		str = key.first
 		xibs = labels[key]		
 		file.puts "\n/* #{xibs.join(', ')} */"				
-		file.puts '"'.encode('UTF-16LE') + str + '" = "'.encode('UTF-16LE') + str + '";'.encode('UTF-16LE')
+		file.puts %Q["#{str}" = "#{str}";]
 	end
 end
