@@ -1,22 +1,19 @@
 #!/usr/bin/env ruby
+# encoding: UTF-8
 
-def get_regex(pattern, encoding='ASCII', options=0)
-  Regexp.new(pattern.encode(encoding),options)
-end
+require 'tmpdir'
 
-
-COMMENTS_REGEXP = get_regex('/\*(?<text>.*)\*/', 'UTF-16LE')
-LABEL_REGEXP = get_regex('^"(?<text>.*)" = ".*";$', 'UTF-16LE')
+COMMENTS_REGEXP = /\*(?<text>.*)\*/
+LABEL_REGEXP = /^"(?<text>.*)" = ".*";$/
 
 def remove_duplicates(file)
 	puts "Removing duplicates from #{file}"	
-
 	
 	labels = Hash.new
 	comment = ""
 
 	# Parse all the labels from the xib
-	File.open(file, 'rb:UTF-16LE').each do |line|
+	File.open(file, 'r:UTF-8').each do |line|
 
 		# Read comments
 		md = COMMENTS_REGEXP.match(line)  
@@ -37,18 +34,17 @@ def remove_duplicates(file)
 		end
 	end  
 
-	File.open(file, 'wb:UTF-16LE') do |file|	
+	File.open(file, 'w:UTF-8') do |file|	
 		labels.keys.sort.each do |key|
 			str = key.first
 			comment = labels[key][:comment]
 			line = labels[key][:line]
-			file.puts "\n/*".encode('UTF-16LE') + comment + "*/".encode('UTF-16LE')				
+			file.puts "\n/* #{comment} */"
 			file.puts line
 		end
 	end
 
 end
-
 
 
 current_dir = File.dirname(__FILE__)
@@ -57,21 +53,35 @@ puts "#{languages.length} languages detected: #{languages.join(', ')}"
 
 # For each language
 languages.each do |dir|
+	file = File.join(dir, 'Localizable.strings')
+	temp_dir = Dir.tmpdir
+	temp_file = File.join(temp_dir, 'Localizable.strings')
+
 	puts "\nInternazionalizing #{dir}..."
 	
-	# Execute genstrings appending results
-	puts "Executing `genstrings -a -o #{dir} **/*.{h,m}`"	
+	# Execute genstrings on new temp file
+	puts "Executing `genstrings -littleEndian -o #{temp_dir} **/*.{h,m}`"	
 	source_files = Dir["**/*.{h,m}"]
- 	`genstrings -a -littleEndian -o #{dir} "#{source_files.join('" "')}"`
+ 	`genstrings -littleEndian -o #{temp_dir} "#{source_files.join('" "')}"`
  	
+ 	# Convert new temp Localizable and original into utf-8
+ 	puts "Executing `#{current_dir}/agconv #{temp_file}`"
+ 	`#{current_dir}/agconv #{temp_file}`
+
+	puts "Executing `#{current_dir}/agconv #{file}`"
+ 	`#{current_dir}/agconv #{file}`
+
+ 	# Append results to final Localizable
+ 	puts "Executing `cat #{temp_file} >> #{file}`"
+ 	`cat #{temp_file} >> #{file}`
+
 	# Execute genxibstrings appending results	
-	puts "Executing `#{current_dir}/genxibstrings -a -o #{dir} **/*.xib`"	
-	source_files = Dir["**/*.xib"]
- 	`#{current_dir}/genxibstrings -a -o #{dir} "#{source_files.join('" "')}"`
+	puts "Executing `#{current_dir}/genxibstrings -a -o #{dir}`"		
+ 	`#{current_dir}/genxibstrings -a -o #{dir}`
  	
 	# Remove duplicates by order	
-	remove_duplicates(File.join(dir, 'Localizable.strings'))
+	remove_duplicates(file)
 
 end
 
-puts "\n\n* DONE *\nAGi18n finished internazionalizing correctly.\nRemember to use the Localizable.strings files as UTF-16LE into your XCode project"
+puts "\n\n* DONE *\nAGi18n finished internazionalizing correctly.\nRemember to use the Localizable.strings files as UTF-8 into your XCode project"
