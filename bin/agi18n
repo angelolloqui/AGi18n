@@ -60,8 +60,8 @@ languages.each do |dir|
 	puts "\nInternazionalizing #{dir}..."
 	
 	# Execute genstrings on new temp file
-	puts "Executing `genstrings -littleEndian -o #{temp_dir} **/*.{h,m}`"	
-	source_files = Dir["**/*.{h,m}"]
+	puts "Executing `genstrings -littleEndian -o #{temp_dir} **/*.{h,m,mm}`"	
+	source_files = Dir["**/*.{h,m,mm}"]
  	`genstrings -littleEndian -o #{temp_dir} "#{source_files.join('" "')}"`
  	
  	# Convert new temp Localizable and original into utf-8
