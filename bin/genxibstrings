@@ -45,12 +45,14 @@ input_files.each do |files|
 		`ibtool --export-strings-file "#{temp_file}" "#{file}"`
 
 		# Parse all the labels from the xib
-		File.open(temp_file, 'rb:UTF-16LE').each do |line|
-			md = LABEL_REGEXP.match(line)  
-			if md  then
-				key = md.captures			
-				labels[key] = Array.new() if labels[key].nil?
-				labels[key].push(name)
+		if File.exist?(temp_file) then
+			File.open(temp_file, 'rb:UTF-16LE').each do |line|
+				md = LABEL_REGEXP.match(line)  
+				if md  then
+					key = md.captures			
+					labels[key] = Array.new() if labels[key].nil?
+					labels[key].push(name)
+				end
 			end 
 		end  	
 	end
