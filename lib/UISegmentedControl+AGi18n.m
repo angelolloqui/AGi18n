@@ -14,7 +14,10 @@
     //Replace text with localizable version
     for (NSInteger segment = 0; segment < self.numberOfSegments; segment++) {
         NSString *title = [self titleForSegmentAtIndex:segment];
-        [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forSegmentAtIndex:segment];
+        if(title.length>0)
+        {
+            [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forSegmentAtIndex:segment];
+        }
     }
 }
 
