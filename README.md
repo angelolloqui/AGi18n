@@ -77,6 +77,10 @@ Forks, patches and other feedback are always welcome.
 
 Thanks for your pull requests to:
 - [sbusch-mobivention](https://github.com/sbusch-mobivention)
+- [woody3k](https://github.com/woody3k)
+- [gonecoding](https://github.com/gonecoding)
+- [fmalekpour](https://github.com/fmalekpour)
+
 
 Credits
 -------
