@@ -18,6 +18,9 @@
     if (self.placeholder.length > 0) {
         self.placeholder = [[NSBundle mainBundle] localizedStringForKey:self.placeholder value:@"" table:nil];
     }
+    if (self.accessibilityLabel.length > 0) {
+        self.accessibilityLabel = [[NSBundle mainBundle] localizedStringForKey:self.accessibilityLabel value:@"" table:nil];
+    }
 }
 
 @end

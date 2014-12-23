@@ -20,6 +20,9 @@
             [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forState:state.integerValue];
         }
     }
+    if (self.accessibilityLabel.length > 0) {
+        self.accessibilityLabel = [[NSBundle mainBundle] localizedStringForKey:self.accessibilityLabel value:@"" table:nil];
+    }
 }
 
 @end
