@@ -15,6 +15,9 @@
     if (self.text.length > 0) {
         self.text = [[NSBundle mainBundle] localizedStringForKey:self.text value:@"" table:nil];
     }
+    if (self.accessibilityLabel.length > 0) {
+        self.accessibilityLabel = [[NSBundle mainBundle] localizedStringForKey:self.accessibilityLabel value:@"" table:nil];
+    }
 }
 
 
