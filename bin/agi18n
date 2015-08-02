@@ -61,8 +61,8 @@ languages.each do |dir|
 	puts "\nInternazionalizing #{dir}..."
 	
 	# Execute genstrings appending results
-	puts "Executing `genstrings -a -o #{dir} **/*.{h,m,mm}`"	
-	source_files = Dir["**/*.{h,m,mm}"]
+	puts "Executing `genstrings -a -o #{dir} **/*.{h,m,mm,swift}`"	
+	source_files = Dir["**/*.{h,m,mm,swift}"]
  	`genstrings -a -littleEndian -o #{dir} "#{source_files.join('" "')}"`
  	
 	# Execute genxibstrings appending results	
