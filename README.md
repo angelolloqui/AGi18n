@@ -59,7 +59,7 @@ All this magic can not come without some caveats:
 
 * **Extra keys in Localizable.strings**: All visible texts are added to your Localizable.strings, including those which are never displayed because they are always set by code after loading the view. This is a caveat that also happens if you use the standard way (with ```ibtool```) and that AGi18n can not resolve.
 
-* **Use UTF-16LE**: The current implementation of agi18n tools use a UTF-16LE byte encoding. Please remember to set the proper encoding in XCode or you will see incorrect data. Support for UTF-8 might be added in the future.
+* **Use UTF-16LE**: The current implementation of agi18n tools use a UTF-16LE byte encoding. Please remember to set the proper encoding in Xcode or you will see incorrect data. Support for UTF-8 might be added in the future.
 
 * more ?
 
