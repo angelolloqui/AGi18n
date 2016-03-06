@@ -19,11 +19,14 @@
 #pragma mark - Method swizzling
 
 + (void)load {
-    Method awakeFromNibOriginal = class_getInstanceMethod(self, @selector(awakeFromNib));
-    Method awakeFromNibCustom = class_getInstanceMethod(self, @selector(awakeFromNibCustom));
-        
-    //Swizzle methods
-    method_exchangeImplementations(awakeFromNibOriginal, awakeFromNibCustom);
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Method awakeFromNibOriginal = class_getInstanceMethod(self, @selector(awakeFromNib));
+        Method awakeFromNibCustom = class_getInstanceMethod(self, @selector(awakeFromNibCustom));
+
+        //Swizzle methods
+        method_exchangeImplementations(awakeFromNibOriginal, awakeFromNibCustom);
+    });
 }
 
 - (void)awakeFromNibCustom {
