@@ -34,7 +34,8 @@ Installation
 The library is composed of two parts. A set of command line utilities and the source code you need to import in your project in order to activate AGi18n.
 
 To **install the command line utilities**, just run this installation tool
-```curl https://raw.github.com/angelolloqui/AGi18n/master/bin/install.sh | sh```
+
+```curl -L https://raw.github.com/angelolloqui/AGi18n/master/bin/install.sh | sh```
 
 or, if you want to do it manually, copy and paste the ```genxibstrings``` and ```agi18n``` files in any folder contained in your PATH (with +x permission)
 
