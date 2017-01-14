@@ -19,6 +19,9 @@
             [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forSegmentAtIndex:segment];
         }
     }
+    if (self.accessibilityLabel.length > 0) {
+        self.accessibilityLabel = [[NSBundle mainBundle] localizedStringForKey:self.accessibilityLabel value:@"" table:nil];
+    }
 }
 
 @end
