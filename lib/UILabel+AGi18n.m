@@ -14,6 +14,7 @@
     //Replace text with localizable version
     if (self.text.length > 0) {
         self.text = [[NSBundle mainBundle] localizedStringForKey:self.text value:@"" table:nil];
+        [self layoutIfNeeded];
     }
 }
 

@@ -17,6 +17,7 @@
         if(title.length>0)
         {
             [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forSegmentAtIndex:segment];
+            [self layoutIfNeeded];
         }
     }
 }

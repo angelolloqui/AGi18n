@@ -17,10 +17,8 @@
     for (NSNumber *state in states) {
         NSString *title = [self titleForState:state.integerValue];
         if (title.length > 0) {
-            [UIView performWithoutAnimation:^{
-                [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forState:state.integerValue];
-                [self layoutIfNeeded];
-            }];
+            [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forState:state.integerValue];
+            [self layoutIfNeeded];
         }
     }
 }
