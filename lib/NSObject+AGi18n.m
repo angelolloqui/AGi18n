@@ -34,7 +34,9 @@
     [self awakeFromNibCustom];
     
     //Localize
-    [self localizeFromNib];
+    [UIView performWithoutAnimation:^{
+        [self localizeFromNib];
+    }];
 }
 
 @end

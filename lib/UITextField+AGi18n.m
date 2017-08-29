@@ -14,9 +14,11 @@
     //Replace text with localizable version
     if (self.text.length > 0) {
         self.text = [[NSBundle mainBundle] localizedStringForKey:self.text value:@"" table:nil];
+        [self layoutIfNeeded];
     }
     if (self.placeholder.length > 0) {
         self.placeholder = [[NSBundle mainBundle] localizedStringForKey:self.placeholder value:@"" table:nil];
+        [self layoutIfNeeded];
     }
 }
 
