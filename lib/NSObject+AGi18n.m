@@ -9,6 +9,8 @@
 #import "NSObject+AGi18n.h"
 #import <objc/runtime.h>
 
+#define AGI18N_USE_SWIZZLING 0
+
 @implementation NSObject (AGi18n)
 
 //By default do nothing when localizing
@@ -16,27 +18,35 @@
 }
 
 
+#if AGI18N_USE_SWIZZLING
 #pragma mark - Method swizzling
 
-+ (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        Method awakeFromNibOriginal = class_getInstanceMethod(self, @selector(awakeFromNib));
-        Method awakeFromNibCustom = class_getInstanceMethod(self, @selector(awakeFromNibCustom));
+// Method swizzling seems to be broken under certain circustamces.
+//https://github.com/angelolloqui/AGi18n/issues/32
+// For now use a category on the NSObject.awakeFromNib instead
 
-        //Swizzle methods
-        method_exchangeImplementations(awakeFromNibOriginal, awakeFromNibCustom);
-    });
++ (void)load {
+    Method awakeFromNibOriginal = class_getInstanceMethod(self, @selector(awakeFromNib));
+    Method awakeFromNibCustom = class_getInstanceMethod(self, @selector(awakeFromNibCustom));
+
+    //Swizzle methods
+    method_exchangeImplementations(awakeFromNibOriginal, awakeFromNibCustom);
 }
 
 - (void)awakeFromNibCustom {
     //Call standard methods
     [self awakeFromNibCustom];
-    
+
     //Localize
-    [UIView performWithoutAnimation:^{
-        [self localizeFromNib];
-    }];
+    [self localizeFromNib];
 }
+
+#else
+#pragma mark - Override awakeFromNib
+
+- (void)awakeFromNib {
+    [self localizeFromNib];
+}
+#endif
 
 @end
