@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 angelolloqui.com. All rights reserved.
 //
 
-#import "UITextField+AGi18n.h"
+#import "NSObject+AGi18n.h"
 
 @implementation UITextField (AGi18n)
 

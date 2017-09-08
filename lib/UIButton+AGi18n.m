@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 angelolloqui.com. All rights reserved.
 //
 
-#import "UIButton+AGi18n.h"
+#import "NSObject+AGi18n.h"
 
 @implementation UIButton (AGi18n)
 

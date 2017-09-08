@@ -5,7 +5,7 @@
 //  Created by Tenyoku Lin on 8/4/15.
 //
 
-#import "UITabBarItem+AGi18n.h"
+#import "NSObject+AGi18n.h"
 
 @implementation UITabBarItem (AGi18n)
 

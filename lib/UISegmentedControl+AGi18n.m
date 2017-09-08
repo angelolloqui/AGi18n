@@ -6,7 +6,7 @@
 //
 //
 
-#import "UISegmentedControl+AGi18n.h"
+#import "NSObject+AGi18n.h"
 
 @implementation UISegmentedControl (AGi18n)
 

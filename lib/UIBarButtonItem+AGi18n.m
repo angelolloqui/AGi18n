@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 angelolloqui.com. All rights reserved.
 //
 
-#import "UIBarButtonItem+AGi18n.h"
+#import "NSObject+AGi18n.h"
 
 @implementation UIBarButtonItem (AGi18n)
 

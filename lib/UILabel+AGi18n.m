@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 angelolloqui.com. All rights reserved.
 //
 
-#import "UILabel+AGi18n.h"
+#import "NSObject+AGi18n.h"
 
 @implementation UILabel (AGi18n)
 
