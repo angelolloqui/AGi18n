@@ -28,10 +28,18 @@ By using AGi18n you make all your IB elements to use your Localizable.strings by
 * **agi18n**: This tool will execute the previous genxibstrings together with genstrings for every language in your app, and will append and merge the results into the same one file for each language, dealing with duplicated keys. This is the tool you should call every time that you make a change in your app, as it will add all your new strings but always preserving the already existing ones. It is very handy to mantain your localizable strings up to date without losing your already translated strings.
 
 
-Installation
-------------
+Installation of the library into your project
+-------------------------
 
-The library is composed of two parts. A set of command line utilities and the source code you need to import in your project in order to activate AGi18n.
+For any project where you want to use AGi18n, you need to **include the source files** contained in the ```/lib``` folder. For that you can just drag & drop the files into your project or use CocoaPods:
+
+```pod 'AGi18n'```
+
+
+Installation of the tools
+-------------------------
+
+The project also includes a set of command line utilities to help you extracting the labels from your Storyboard or XIB files into Localizable files. This step is not required if you do not want to use the extracting tools.
 
 To **install the command line utilities**, just run this installation tool
 
@@ -39,16 +47,22 @@ To **install the command line utilities**, just run this installation tool
 
 or, if you want to do it manually, copy and paste the ```genxibstrings``` and ```agi18n``` files in any folder contained in your PATH (with +x permission)
 
-** WARNING **: The current version of AGi18n tools require ruby 1.9.0.
-
-Then, for any project where you want to use AGi18n, you need to **include the source files** contained in the ```/lib``` folder. For that you can use CocoaPods or just drag & drop the files into your project. [TODO]
+**WARNING**: The current version of AGi18n tools require ruby 1.9.0.
 
 
 Internals
 ---------
-The library swizzles the ```[NSObject awakeFromNib]``` method to hook a call to a new empty method called ```[NSObject localizeFromNib]```, so virtually every object can be localized in the XIB files. AGi18n also includes a built-in set of categories for standard UI components such as UILabel, UIButton, UITextField... to correctly set their localizable properties (text, title, placeholders,...). 
+The library can run in 2 hook modes:
 
-If you want to localize a custom component, just overwrite the method ```localizeFromNib``` and place your localization logic there. This step is not needed if your custom component is just a composition of other standard UI components.
+- Swizzling the ```[NSObject awakeFromNib]``` 
+- Overriding the ```[NSObject awakeFromNib]``` method 
+
+Since issue [#32](https://github.com/angelolloqui/AGi18n/issues/32) the default method is the override. However, you can change it to swizzling by declaring the precompilation header `AGI18N_USE_SWIZZLING=1`.
+
+Both hook modes will call to a method called `[NSObject localizeFromNib]`, so virtually every object can be localized in the XIB files. AGi18n also includes a built-in set of categories for standard UI components such as `UILabel`, `UIButton`, `UITextField`... to correctly set their localizable properties (text, title, placeholders,...). 
+
+If you want to localize a custom component, just overwrite the method ```localizeFromNib``` and place your localization logic there. Make sure you call to `[super awakeFromNib]`if you override that method.
+
 
 
 Caveats
@@ -62,7 +76,6 @@ All this magic can not come without some caveats:
 
 * **Use UTF-16LE**: The current implementation of agi18n tools use a UTF-16LE byte encoding. Please remember to set the proper encoding in XCode or you will see incorrect data. Support for UTF-8 might be added in the future.
 
-* more ?
 
 
 License
