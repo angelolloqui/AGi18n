@@ -6,6 +6,7 @@
 //
 //
 
+#import <UIKit/UIKit.h>
 #import "NSObject+AGi18n.h"
 
 @implementation UISegmentedControl (AGi18n)

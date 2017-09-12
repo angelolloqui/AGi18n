@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 angelolloqui.com. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "NSObject+AGi18n.h"
 
 @implementation UINavigationItem (AGi18n)
