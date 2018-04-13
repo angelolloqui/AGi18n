@@ -15,7 +15,7 @@
 
     //Replace text with localizable version
     if (self.title.length > 0) {
-        self.title = [[NSBundle mainBundle] localizedStringForKey:self.title value:@"" table:nil];
+        self.title = [[NSBundle mainBundle] localizedStringForKey:self.title value:@"" table:self.AGi18nTableName];
     }
 }
 

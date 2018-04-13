@@ -17,7 +17,7 @@
         NSString *title = [self titleForSegmentAtIndex:segment];
         if(title.length>0)
         {
-            [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:nil] forSegmentAtIndex:segment];
+            [self setTitle:[[NSBundle mainBundle] localizedStringForKey:title value:@"" table:self.AGi18nTableName] forSegmentAtIndex:segment];
             [self layoutIfNeeded];
         }
     }
