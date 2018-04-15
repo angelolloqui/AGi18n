@@ -14,10 +14,10 @@
 - (void)localizeFromNib {
     //Replace text with localizable version
     if (self.title.length > 0) {
-        self.title = [[NSBundle mainBundle] localizedStringForKey:self.title value:@"" table:nil];
+        self.title = [[NSBundle mainBundle] localizedStringForKey:self.title value:@"" table:self.AGi18nTableName];
     }
     if (self.prompt.length > 0) {
-        self.prompt = [[NSBundle mainBundle] localizedStringForKey:self.prompt value:@"" table:nil];
+        self.prompt = [[NSBundle mainBundle] localizedStringForKey:self.prompt value:@"" table:self.AGi18nTableName];
     }
 }
 

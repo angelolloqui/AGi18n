@@ -11,7 +11,17 @@
 
 #define AGI18N_USE_SWIZZLING 0
 
+static void *AGi18nTableNameKey;
+
 @implementation NSObject (AGi18n)
+
+- (NSString *)AGi18nTableName {
+    return objc_getAssociatedObject(self, &AGi18nTableNameKey);
+}
+
+-(void)setAGi18nTableName:(NSString *)AGi18nTableName {
+    objc_setAssociatedObject(self, &AGi18nTableNameKey, AGi18nTableName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 //By default do nothing when localizing
 - (void)localizeFromNib {

@@ -10,6 +10,8 @@
 
 @interface NSObject (AGi18n)
 
+@property (strong, nonatomic) IBInspectable NSString *AGi18nTableName;
+
 - (void)localizeFromNib;
 
 @end
