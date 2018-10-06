@@ -81,7 +81,7 @@ All this magic can not come without some caveats:
 License
 -------
 
-Made available under the MIT License.
+Made available under the BSD3 License
 
 
 Collaboration
